@@ -1,5 +1,5 @@
 name: image_archive_share
-description: ""
+description: "A simple application to create uncompressed archives of images for sharing."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.alvikhan.imagearchiveshare.image_archive_share">
    <application
-        android:label="image_archive_share"
+        android:label="Image Archive Share"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
