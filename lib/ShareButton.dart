@@ -61,8 +61,10 @@ class ShareButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             primary: Colors.blueAccent,
             padding: const EdgeInsets.symmetric(vertical: 20),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(10)
+                  )
               )
           ),
           onPressed: () => share(),
