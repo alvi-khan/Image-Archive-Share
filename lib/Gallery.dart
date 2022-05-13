@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_archive_share/ImageContainer.dart';
 
 class Gallery extends StatefulWidget {
   const Gallery(this.images, {Key? key}) : super(key: key);
@@ -10,6 +11,11 @@ class Gallery extends StatefulWidget {
 }
 
 class _Gallery extends State<Gallery> {
+  Set<int> selected = {};
+
+  void toggleSelection(int index) {
+    setState(() => selected.contains(index) ? selected.remove(index) : selected.add(index));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +32,10 @@ class _Gallery extends State<Gallery> {
             itemCount: widget.images.length,
             itemBuilder: (context, index) {
               return Center(
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: Image.file(widget.images[index])
+                child: ImageContainer(
+                    selected: selected.contains(index),
+                    image: widget.images[index],
+                    toggleSelect: () => toggleSelection(index)
                 ),
               );
             }
