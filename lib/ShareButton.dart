@@ -4,12 +4,36 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ShareButton extends StatelessWidget {
-  const ShareButton({Key? key, required this.images, required this.selected}) : super(key: key);
+  ShareButton({Key? key, required this.images, required this.selected}) : super(key: key);
   final List<File> images;
   final Set<int> selected;
+  late final BuildContext context;
+
+  void error() {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text(
+              "No images selected.",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16)
+          ),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.redAccent,
+          padding: const EdgeInsets.all(15),
+          duration: const Duration(seconds: 1),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 100,
+            left: 80,
+            right: 80,
+          ),
+        )
+    );
+  }
 
   void share() async {
     if (selected.isEmpty) {
+      error();
       return;
     }
 
@@ -30,23 +54,24 @@ class ShareButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    this.context = context;
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: Colors.blueAccent,
-            padding: EdgeInsets.symmetric(vertical: 20),
+            padding: const EdgeInsets.symmetric(vertical: 20),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)
               )
           ),
           onPressed: () => share(),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
-              children: [
+              mainAxisSize: MainAxisSize.min,
+              children: const [
                 Icon(Icons.share),
                 SizedBox(width: 10),
-                const Text("Share", style: TextStyle(fontSize: 20))
+                Text("Share", style: TextStyle(fontSize: 20))
               ]
           )
       ),

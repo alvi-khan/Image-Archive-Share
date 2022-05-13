@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_archive_share/Body.dart';
+import 'package:image_archive_share/ImageLoadingError.dart';
 import 'package:image_archive_share/LoadingIndicator.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -29,6 +30,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<File> images = [];
+  bool loading = true;
+  bool permissionDenied = false;
 
   @override
   void initState() {
@@ -37,7 +40,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void retrieveImages() async {
-    final albums = await PhotoManager.getAssetPathList();
+    List<AssetPathEntity> albums = [];
+    try {
+      albums = await PhotoManager.getAssetPathList();
+    }
+    catch(e) {
+      setState(() => permissionDenied = true);
+      print(e);
+    }
     List<AssetEntity> images = [];
     for (var album in albums) {
       images.addAll(await album.getAssetListRange(start: 0, end: album.assetCount));
@@ -57,14 +67,18 @@ class _MyHomePageState extends State<MyHomePage> {
         imageFiles.add(file);
       }
     }
-    setState(() => this.images = imageFiles);
+    setState(() {
+      this.images = imageFiles;
+      loading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-          child: images.isEmpty ? const LoadingIndicator() : Body(images + images + images),
+          child: permissionDenied ? const ImageLoadingError("Gallery access denied.") :
+          loading ? const LoadingIndicator() : Body(images),
         ),
     );
   }

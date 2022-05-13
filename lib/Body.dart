@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_archive_share/Gallery.dart';
+import 'package:image_archive_share/ImageLoadingError.dart';
 import 'package:image_archive_share/ShareButton.dart';
 
 class Body extends StatefulWidget {
@@ -20,6 +21,10 @@ class _Body extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.images.isEmpty) {
+      return const ImageLoadingError("No images found.");
+    }
+
     return Column(
       children: [
         Expanded(
