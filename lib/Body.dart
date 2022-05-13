@@ -20,23 +20,23 @@ class _Body extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Expanded(
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             child: Gallery(
                 images: widget.images,
                 selected: selected,
                 toggleSelection: (index) => toggleSelection(index)
-            )
-          ),
-          ShareButton(
-              selected: selected,
-              images: widget.images,
+            ),
           )
-        ],
-      ),
+        ),
+        ShareButton(
+            selected: selected,
+            images: widget.images,
+        )
+      ],
     );
   }
 }

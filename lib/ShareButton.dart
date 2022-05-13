@@ -31,15 +31,24 @@ class ShareButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 20),
+      width: MediaQuery.of(context).size.width,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
+            primary: Colors.blueAccent,
+            padding: EdgeInsets.symmetric(vertical: 20),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)
+                  borderRadius: BorderRadius.circular(10)
               )
           ),
           onPressed: () => share(),
-          child: const Text("Share", style: TextStyle(fontSize: 20),)
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.share),
+                SizedBox(width: 10),
+                const Text("Share", style: TextStyle(fontSize: 20))
+              ]
+          )
       ),
     );
   }
