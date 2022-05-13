@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_archive_share/Gallery.dart';
+import 'package:image_archive_share/Body.dart';
 import 'package:image_archive_share/LoadingIndicator.dart';
 import 'package:photo_manager/photo_manager.dart';
 
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-          child: images.isEmpty ? const LoadingIndicator() : Gallery(images + images + images),
+          child: images.isEmpty ? const LoadingIndicator() : Body(images + images + images),
         ),
     );
   }
