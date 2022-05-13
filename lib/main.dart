@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_archive_share/Body.dart';
 import 'package:image_archive_share/ImageLoadingError.dart';
 import 'package:image_archive_share/LoadingIndicator.dart';
@@ -33,10 +34,22 @@ class _MyHomePageState extends State<MyHomePage> {
   bool loading = true;
   bool permissionDenied = false;
 
+  void changeNotify(MethodCall call) {
+    retrieveImages();
+  }
+
   @override
   void initState() {
     super.initState();
     retrieveImages();
+    PhotoManager.addChangeCallback(changeNotify);
+    PhotoManager.startChangeNotify();
+  }
+
+  @override
+  void dispose() {
+    PhotoManager.stopChangeNotify();
+    super.dispose();
   }
 
   void retrieveImages() async {
