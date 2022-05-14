@@ -30,7 +30,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<File> images = [];
+  List<String> images = [];
   bool loading = true;
   bool permissionDenied = false;
 
@@ -67,21 +67,19 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     // recent images first
-    images.sort((a, b) => a.createDateTime.compareTo(b.createDateTime));
+    images.sort((a, b) => b.createDateTime.compareTo(a.createDateTime));
 
     // multiple albums might have the same image
     // must ensure there are no duplicate
     Set<String> imageFilePaths = {};
-    List<File> imageFiles = [];
     for (var image in images) {
       File? file = await image.file;
       if (file != null && !imageFilePaths.contains(file.path)) {
         imageFilePaths.add(file.path);
-        imageFiles.add(file);
       }
     }
     setState(() {
-      this.images = imageFiles;
+      this.images = imageFilePaths.toList();
       loading = false;
     });
   }

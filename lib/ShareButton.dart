@@ -5,7 +5,7 @@ import 'package:share_plus/share_plus.dart';
 
 class ShareButton extends StatelessWidget {
   ShareButton({Key? key, required this.images, required this.selected}) : super(key: key);
-  final List<File> images;
+  final List<String> images;
   final Set<int> selected;
   late final BuildContext context;
 
@@ -43,7 +43,7 @@ class ShareButton extends StatelessWidget {
     encoder.create(directory.path + zipFile, level: ZipFileEncoder.STORE);
 
     for (int i in selected) {
-      File image = images[i];
+      File image = File(images[i]);
       String filename = image.path.replaceAll(image.parent.path, "");
       encoder.addFile(image, filename, ZipFileEncoder.STORE);
     }
