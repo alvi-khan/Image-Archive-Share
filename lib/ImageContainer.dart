@@ -5,7 +5,7 @@ class ImageContainer extends StatelessWidget {
   const ImageContainer({Key? key, required this.selected, required this.image, required this.toggleSelect}) : super(key: key);
 
   final bool selected;
-  final File image;
+  final String image;
   final Function toggleSelect;
 
   @override
@@ -16,13 +16,13 @@ class ImageContainer extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(15),
                   color: Colors.blueAccent
               ),
               padding: selected ? const EdgeInsets.all(5) : EdgeInsets.zero,
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Image.file(image)
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.file(File(image), cacheWidth: 200, cacheHeight: 200),
               ),
             ),
             if (selected) const SelectedIcon()

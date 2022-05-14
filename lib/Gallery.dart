@@ -4,7 +4,7 @@ import 'package:image_archive_share/ImageContainer.dart';
 
 class Gallery extends StatelessWidget {
   const Gallery({Key? key, required this.images, required this.selected, required this.toggleSelection}) : super(key: key);
-  final List<File> images;
+  final List<String> images;
   final Set<int> selected;
   final Function toggleSelection;
 
@@ -12,9 +12,9 @@ class Gallery extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
+          crossAxisCount: 2,
           crossAxisSpacing: 10,
-          childAspectRatio: 0.7,
+          mainAxisSpacing: 10,
         ),
         shrinkWrap: true,
         itemCount: images.length,

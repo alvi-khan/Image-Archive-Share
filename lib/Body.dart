@@ -6,7 +6,7 @@ import 'package:image_archive_share/ShareButton.dart';
 
 class Body extends StatefulWidget {
   const Body(this.images, {Key? key}) : super(key: key);
-  final List<File> images;
+  final List<String> images;
 
   @override
   State<StatefulWidget> createState() => _Body();
