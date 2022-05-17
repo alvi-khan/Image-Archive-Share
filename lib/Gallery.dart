@@ -1,12 +1,12 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_archive_share/ImageContainer.dart';
 
 class Gallery extends StatelessWidget {
-  const Gallery({Key? key, required this.images, required this.selected, required this.toggleSelection}) : super(key: key);
+  const Gallery({Key? key, required this.images, required this.selected, required this.toggleSelection, required this.toggleFullscreen}) : super(key: key);
   final List<String> images;
   final Set<int> selected;
   final Function toggleSelection;
+  final Function toggleFullscreen;
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +21,10 @@ class Gallery extends StatelessWidget {
         itemBuilder: (context, index) {
           return Center(
             child: ImageContainer(
-                selected: selected.contains(index),
-                image: images[index],
-                toggleSelect: () => toggleSelection(index)
+              selected: selected.contains(index),
+              image: images[index],
+              toggleSelect: () => toggleSelection(index),
+              toggleFullscreen: (image) => toggleFullscreen(image),
             ),
           );
         }
