@@ -1,20 +1,24 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_archive_share/ImageManager.dart';
+import 'package:provider/provider.dart';
 
 class ImageContainer extends StatelessWidget {
-  const ImageContainer({Key? key, required this.selected, required this.image, required this.toggleSelect, required this.toggleFullscreen}) : super(key: key);
-
-  final bool selected;
-  final String image;
-  final Function toggleSelect;
-  final Function toggleFullscreen;
+  ImageContainer(this.index, {Key? key}) : super(key: key);
+  final int index;
+  late ImageManager imageManager;
 
   @override
   Widget build(BuildContext context) {
+    imageManager = Provider.of<ImageManager>(context);
+    String image = imageManager.images[index];
+    File imageFile = File(image);
+    bool selected = imageManager.selected.contains(index);
+
     return GestureDetector(
-      onTap: () => toggleSelect(),
-      onLongPressStart: (_) => toggleFullscreen(image),
-      onLongPressEnd: (_) => toggleFullscreen(""),
+      onTap: () => imageManager.toggleSelection(index),
+      onLongPressStart: (_) => imageManager.updateFullScreenImage(imageFile),
+      onLongPressEnd: (_) => imageManager.updateFullScreenImage(null),
       child: Stack(
           children: [
             Container(
@@ -26,7 +30,7 @@ class ImageContainer extends StatelessWidget {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.file(
-                      File(image),
+                      imageFile,
                       cacheWidth: 400,
                       width: 200,
                       fit: BoxFit.cover

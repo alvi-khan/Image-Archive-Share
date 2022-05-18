@@ -1,13 +1,14 @@
 import 'dart:io';
 import 'package:archive/archive_io.dart';
 import 'package:flutter/material.dart';
+import 'package:image_archive_share/ImageManager.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ShareButton extends StatelessWidget {
-  ShareButton({Key? key, required this.images, required this.selected}) : super(key: key);
-  final List<String> images;
-  final Set<int> selected;
+  ShareButton({Key? key}) : super(key: key);
   late final BuildContext context;
+  late ImageManager imageManager;
 
   void error() {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -32,7 +33,7 @@ class ShareButton extends StatelessWidget {
   }
 
   void share() async {
-    if (selected.isEmpty) {
+    if (imageManager.selected.isEmpty) {
       error();
       return;
     }
@@ -42,8 +43,8 @@ class ShareButton extends StatelessWidget {
     var encoder = ZipFileEncoder();
     encoder.create(directory.path + zipFile, level: ZipFileEncoder.STORE);
 
-    for (int i in selected) {
-      File image = File(images[i]);
+    for (int i in imageManager.selected) {
+      File image = File(imageManager.images[i]);
       String filename = image.path.replaceAll(image.parent.path, "");
       encoder.addFile(image, filename, ZipFileEncoder.STORE);
     }
@@ -54,7 +55,9 @@ class ShareButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    imageManager = Provider.of<ImageManager>(context);
     this.context = context;
+
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: ElevatedButton(

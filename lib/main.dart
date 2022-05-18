@@ -3,11 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_archive_share/Body.dart';
 import 'package:image_archive_share/ImageLoadingError.dart';
+import 'package:image_archive_share/ImageManager.dart';
 import 'package:image_archive_share/LoadingIndicator.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ImageManager(),
+      child: const MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,9 +37,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<String> images = [];
   bool loading = true;
   bool permissionDenied = false;
+  late ImageManager imageManager;
 
   void changeNotify(MethodCall call) {
     retrieveImages();
@@ -41,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    imageManager = Provider.of<ImageManager>(context, listen: false);
     retrieveImages();
     PhotoManager.addChangeCallback(changeNotify);
     PhotoManager.startChangeNotify();
@@ -78,8 +86,10 @@ class _MyHomePageState extends State<MyHomePage> {
         imageFilePaths.add(file.path);
       }
     }
+
+    imageManager.updateImages(imageFilePaths.toList());
+
     setState(() {
-      this.images = imageFilePaths.toList();
       loading = false;
     });
   }
@@ -89,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         body: SafeArea(
           child: permissionDenied ? const ImageLoadingError("Gallery access denied.") :
-          loading ? const LoadingIndicator() : Body(images),
+          loading ? const LoadingIndicator() : Body(),
         ),
     );
   }
