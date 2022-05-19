@@ -81,6 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // must ensure there are no duplicate
     Set<String> imageFilePaths = {};
     for (var image in images) {
+      if(image.type != AssetType.image) continue; //ignore non-images
       File? file = await image.file;
       if (file != null && !imageFilePaths.contains(file.path)) {
         imageFilePaths.add(file.path);

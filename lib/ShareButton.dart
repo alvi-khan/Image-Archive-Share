@@ -50,7 +50,8 @@ class ShareButton extends StatelessWidget {
     }
 
     encoder.close();
-    await Share.shareFiles([directory.path + zipFile]);
+    ShareResult result = await Share.shareFilesWithResult([directory.path + zipFile]);
+    if (result.status == ShareResultStatus.success) imageManager.clearSelections();
   }
 
   @override
