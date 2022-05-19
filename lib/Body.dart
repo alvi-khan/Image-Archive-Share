@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_archive_share/ClearButton.dart';
 import 'package:image_archive_share/FullScreenImage.dart';
 import 'package:image_archive_share/Gallery.dart';
 import 'package:image_archive_share/ImageLoadingError.dart';
@@ -26,16 +27,22 @@ class _Body extends State<Body> with TickerProviderStateMixin{
 
     return Stack(
       children: [
-        Column(
-          children: [
-            Expanded(
-                child: Container(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                  child: Gallery(),
-                )
+        Container(
+          padding: const EdgeInsets.all(30),
+          child: Gallery(),
+        ),
+        Align(
+          alignment: AlignmentDirectional.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+             children: [
+               ShareButton(),
+               const SizedBox(width: 20),
+               const ClearButton()
+             ],
             ),
-            ShareButton(),
-          ],
+          ),
         ),
         IgnorePointer(
           child: Visibility(

@@ -58,16 +58,13 @@ class ShareButton extends StatelessWidget {
     imageManager = Provider.of<ImageManager>(context);
     this.context = context;
 
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
+    return Expanded(
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             primary: Colors.blueAccent,
             padding: const EdgeInsets.symmetric(vertical: 20),
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(10)
-                  )
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
               )
           ),
           onPressed: () => share(),

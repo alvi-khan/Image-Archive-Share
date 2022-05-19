@@ -16,6 +16,11 @@ class ImageManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearSelections() {
+    selected.clear();
+    notifyListeners();
+  }
+
   void updateFullScreenImage(File? file) {
     fullScreenImage = file;
     notifyListeners();
