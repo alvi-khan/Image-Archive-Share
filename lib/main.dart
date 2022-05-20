@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-          child: permissionDenied ? const ImageLoadingError("Gallery access denied.") :
+          child: permissionDenied ? const ImageLoadingError("Gallery access denied.", permissionsRequired: true) :
           loading ? const LoadingIndicator() : Body(),
         ),
     );
