@@ -33,6 +33,7 @@ class ImageContainer extends StatelessWidget {
                       imageFile,
                       cacheWidth: 400,
                       width: 200,
+                      height: 200,
                       fit: BoxFit.cover
                   ),
               ),

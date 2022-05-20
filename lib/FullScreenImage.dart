@@ -1,35 +1,89 @@
 import 'dart:io';
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:image_archive_share/ImageManager.dart';
-import 'package:provider/provider.dart';
 
-class FullScreenImage extends StatelessWidget {
-  FullScreenImage({Key? key}) : super(key: key);
-  late ImageManager imageManager;
+class FullScreenImage extends StatefulWidget {
+  const FullScreenImage({Key? key, required this.image}) : super(key: key);
+  final File? image;
+
+  @override
+  State<FullScreenImage> createState() => _FullScreenImageState();
+}
+
+class _FullScreenImageState extends State<FullScreenImage> with TickerProviderStateMixin{
+  late Listenable animation;
+  late AnimationController controller;
+  Image? image;
+  bool cover = false;
+
+  void updateImage() {
+    if (widget.image != null) {
+      setState(() {
+        cover = true;
+        image = Image.file(
+          widget.image!,
+          cacheWidth: MediaQuery.of(context).size.width.toInt(),
+          width: MediaQuery.of(context).size.width,
+        );
+      });
+      controller.forward();
+    }
+    else {
+      setState(() => cover = false);
+      controller.reverse().whenComplete(() {
+        setState(() => image = null);
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant FullScreenImage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    updateImage();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 200),
+    );
+    animation = controller;
+  }
 
   @override
   Widget build(BuildContext context) {
-    imageManager = Provider.of<ImageManager>(context);
-    File? image = imageManager.fullScreenImage;
 
-    return IgnorePointer(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
-        child: Center(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: image == null ? null : Image.file(
-                image,
-                cacheWidth: MediaQuery.of(context).size.width.toInt(),
-                width: MediaQuery.of(context).size.width,
-              ),
-            ),
-          ),
+    return AnimatedBuilder(
+        animation: controller,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: image
         ),
-      ),
+        builder: (context, child) {
+          return Stack(
+            children: [
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 200),
+                opacity: cover ? 1 : 0,
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  color: Colors.black87,
+                ),
+              ),
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * controller.value,
+                    child: child,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
     );
   }
 }

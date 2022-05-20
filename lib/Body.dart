@@ -45,10 +45,7 @@ class _Body extends State<Body> with TickerProviderStateMixin{
           ),
         ),
         IgnorePointer(
-          child: Visibility(
-            visible: imageManager.fullScreenImage != null ,
-            child: FullScreenImage(),
-          ),
+          child: FullScreenImage(image: imageManager.fullScreenImage),
         )
       ]
     );
